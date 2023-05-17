@@ -1,11 +1,13 @@
 package com.example.hellokittyquiz
 
+import android.app.Activity
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import com.example.hellokittyquiz.databinding.ActivityMainBinding
 
@@ -13,6 +15,14 @@ private const val TAG = "MainActivity"
 
 class MainActivity : AppCompatActivity() {
     private val quizViewModel: QuizViewModel by viewModels()
+    private val cheatLauncher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()){
+        result ->
+        if(result.resultCode == Activity.RESULT_OK){
+            quizViewModel.isCheater = result.data?.getBooleanExtra(EXTRA_ANSWER_SHOWN, false)?: false
+        }//end if
+    }//end cheat launcher
+
     private lateinit var binding: ActivityMainBinding
     private lateinit var trueButton: Button
     private lateinit var falseButton: Button
@@ -72,15 +82,16 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.nextButton.setOnClickListener {
+            if(quizViewModel.currentIndex == quizViewModel.questionBank.size-1){
+                showScore()
+            }
             //this part ensures that if the next question is not empty, you cannot click next button
             if (quizViewModel.nextQuestion!="") {
                 trueButton.isClickable = false
                 falseButton.isClickable = false
                 quizViewModel.nextQuestion?.let { Log.d("aa", it) }
                 quizViewModel.moveToNext()
-                if(quizViewModel.currentIndex == quizViewModel.questionBank.size-1){
-                    showScore()
-                }
+
             }else{
                 trueButton.isClickable=true
                 falseButton.isClickable=true
@@ -94,8 +105,10 @@ class MainActivity : AppCompatActivity() {
             quizViewModel.moveToNext()
             updateQuestion()
         }
-        if (quizViewModel.currentIndex == quizViewModel.questionBank.size - 1) {
-            showScore()
+        binding.cheatButton.setOnClickListener{
+            val answerIsTrue = quizViewModel.currentQuestionAnswer
+            val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
+            cheatLauncher.launch(intent)
         }
         updateQuestion()
     }
@@ -133,12 +146,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun checkAnswer(userAnswer: Boolean){
         val correctAnswer = quizViewModel.currentQuestionAnswer
-        val messageResId = if (userAnswer == correctAnswer){
-            R.string.correct_button
-        }
-        else{
-            R.string.incorrect_button
-        }
+        val messageResId = when{
+            quizViewModel.isCheater -> R.string.judgement_toast
+            userAnswer == correctAnswer -> R.string.correct_button
+            else -> R.string.incorrect_button
+        }//end val
         Toast.makeText(this, messageResId, Toast.LENGTH_SHORT).show()
     }
 
