@@ -3,7 +3,7 @@ package com.example.hellokittyquiz
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
-private const val CURRENT_INDEX_KEY = "CURRENT_INDEX_KEY"
+const val CURRENT_INDEX_KEY = "CURRENT_INDEX_KEY"
 const val IS_CHEATER_KEY = "IS_CHEATER_KEY"
 
 class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
@@ -13,15 +13,18 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
         set(value) = savedStateHandle.set(CURRENT_INDEX_KEY, value)
 
     val questionBank = listOf(
-        Question(R.string.question1, true, "",false),
-        Question(R.string.question2, false,"",false),
-        Question(R.string.question3, true,"",false),
-        Question(R.string.question4, false,"",false),
-        Question(R.string.question5, false,"",false))
+        Question(R.string.question1, true, "",false, ""),
+        Question(R.string.question2, false,"",false, ""),
+        Question(R.string.question3, true,"",false, ""),
+        Question(R.string.question4, false,"",false, ""),
+        Question(R.string.question5, false,"",false, ""))
 
     var isCheater: Boolean
         get() = savedStateHandle[IS_CHEATER_KEY] ?: false
         set(value) = savedStateHandle.set(IS_CHEATER_KEY, value)
+
+    val playerCheated: String?
+        get() = questionBank[currentIndex].cheated
 
     val currentQuestionAnswer: Boolean
         get() = questionBank[currentIndex].answer
@@ -54,6 +57,10 @@ class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel(
         val correctAnswer = currentQuestionAnswer
         questionBank[currentIndex].answered = state
         questionBank[currentIndex].answeredCorrectly = (state == "True" && correctAnswer) || (state == "False" && !correctAnswer)
+    }
+
+    fun setCheaterState(cheater:String){
+        questionBank[currentIndex].cheated = cheater
     }
 
 

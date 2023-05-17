@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
         binding.trueButton.setOnClickListener{
             checkAnswer(true)
             if(trueButton.isPressed){
+                if (quizViewModel.playerCheated == "True"){ R.string.judgement_toast }
                 quizViewModel.setAnswerState("True")
                 trueButton.isClickable = false
                 falseButton.isClickable = false
@@ -57,6 +58,7 @@ class MainActivity : AppCompatActivity() {
         binding.falseButton.setOnClickListener {
             checkAnswer(false)
             if(falseButton.isPressed){
+                if (quizViewModel.playerCheated == "True"){ R.string.judgement_toast }
                 quizViewModel.setAnswerState("False")
                 trueButton.isClickable = false
                 falseButton.isClickable = false
@@ -85,6 +87,7 @@ class MainActivity : AppCompatActivity() {
             if(quizViewModel.currentIndex == quizViewModel.questionBank.size-1){
                 showScore()
             }
+
             //this part ensures that if the next question is not empty, you cannot click next button
             if (quizViewModel.nextQuestion!="") {
                 trueButton.isClickable = false
@@ -109,6 +112,7 @@ class MainActivity : AppCompatActivity() {
             val answerIsTrue = quizViewModel.currentQuestionAnswer
             val intent = CheatActivity.newIntent(this@MainActivity, answerIsTrue)
             cheatLauncher.launch(intent)
+            quizViewModel.setCheaterState("True")
         }
         updateQuestion()
     }
@@ -147,7 +151,7 @@ class MainActivity : AppCompatActivity() {
     private fun checkAnswer(userAnswer: Boolean){
         val correctAnswer = quizViewModel.currentQuestionAnswer
         val messageResId = when{
-            quizViewModel.isCheater -> R.string.judgement_toast
+            quizViewModel.playerCheated == "True" -> R.string.judgement_toast
             userAnswer == correctAnswer -> R.string.correct_button
             else -> R.string.incorrect_button
         }//end val
