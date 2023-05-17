@@ -1,0 +1,20 @@
+<resources>
+    //////APP NAME//////////////
+    <string name="app_name">Hello Kitty Quiz</string>
+
+    ////////QUESTIONS//////////
+    <string name="question1">Hello Kitty\'s Boyfriend is named Dear Daniel</string>
+    <string name="question2">Hello Kitty is not a UNICEF ambassador</string>
+    <string name="question3">Hello Kitty was born in London </string>
+    <string name="question4">Hello Kitty\'s real name is Kitty Black</string>
+    <string name="question5">Hello Kitty is a cat</string>
+
+
+    ////////BUTTONS////////////
+    <string name="true_button">TRUE</string>
+    <string name="false_button">FALSE</string>
+    <string name="correct_button">THIS IS CORRECT!</string>
+    <string name="incorrect_button">THIS IS INCORRECT!</string>
+    <string name="next_button">NEXT</string>
+    <string name="previous_button">PREV</string>
+</resources>
