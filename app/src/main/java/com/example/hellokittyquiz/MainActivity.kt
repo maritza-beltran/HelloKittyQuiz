@@ -121,7 +121,12 @@ class MainActivity : AppCompatActivity() {
         Log.d(TAG, "onDestroy() called")
     }
 
+    //try pausing execution within the updateQuestion() fun only when the answer to the current question is "true"
+    //Log.d(TAG, "pausing execution when current answer is true", Exception())
     private fun updateQuestion(){
+        if(quizViewModel.currentQuestionAnswer){
+            Log.d(TAG, "Pausing execution when current answer is 'true'", Exception())
+        }
         val questionTextResId = quizViewModel.currentQuestionText
         binding.questionTextView.setText(questionTextResId)
     }
