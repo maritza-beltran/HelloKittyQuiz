@@ -7,10 +7,10 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.example.hellokittyquiz.databinding.ActivityCheatBinding
 
-const val EXTRA_ANSWER_SHOWN = "com.hellokittyquiz.answer_shown"
-private const val EXTRA_ANSWER_IS_TRUE = "com.hellokittyquiz.answer_is_true"
+const val EXTRA_ANSWER_SHOWN = "com.example.hellokittyquiz.answer_shown"
+private const val EXTRA_ANSWER_IS_TRUE = "com.example.hellokittyquiz.answer_is_true"
 
-class CheatActivity : AppCompatActivity() {
+class CheatActivity: AppCompatActivity() {
     private lateinit var binding: ActivityCheatBinding
     private var answerIsTrue = false
 
