@@ -1,21 +1,11 @@
 package com.example.hellokittyquiz
 
-import android.util.Log
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 
-private const val TAG = "QuizViewModel"
 const val CURRENT_INDEX_KEY = "CURRENT_INDEX_KEY"
 
 class QuizViewModel(private val savedStateHandle: SavedStateHandle) : ViewModel() {
-    init {
-        Log.d(TAG, "ViewModel instance created")
-    }
-
-    override fun onCleared() {
-        super.onCleared()
-        Log.d(TAG, "ViewModel instance about to be destroyed")
-    }
 
         var currentIndex: Int
         get() = savedStateHandle[CURRENT_INDEX_KEY] ?: 0
