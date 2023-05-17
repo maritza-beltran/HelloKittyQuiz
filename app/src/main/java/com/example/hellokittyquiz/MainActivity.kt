@@ -76,7 +76,10 @@ class MainActivity : AppCompatActivity() {
                 trueButton.isClickable = false
                 falseButton.isClickable = false
                 quizViewModel.nextQuestion?.let { Log.d("aa", it) }
-                showScore()
+                quizViewModel.moveToNext()
+                if(quizViewModel.currentIndex == quizViewModel.questionBank.size-1){
+                    showScore()
+                }
             }else{
                 trueButton.isClickable=true
                 falseButton.isClickable=true
